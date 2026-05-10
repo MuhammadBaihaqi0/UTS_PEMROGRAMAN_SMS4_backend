@@ -1,36 +1,46 @@
 package config
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"os"
 
-	_ "github.com/lib/pq"
+	"github.com/joho/godotenv"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-var DB *sql.DB
+var DB *gorm.DB
 
-func ConnectDB() {
-	dsn := fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_NAME"),
-		os.Getenv("DB_SSLMODE"),
-	)
-
-	db, err := sql.Open("postgres", dsn)
+func InitDB() {
+	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatalf("❌ Gagal membuka koneksi database: %v", err)
+		err = godotenv.Load(".env")
+		if err != nil {
+			err = godotenv.Load("../.env")
+		}
+		if err != nil {
+			log.Println(".env tidak ditemukan")
+		}
 	}
 
-	if err := db.Ping(); err != nil {
-		log.Fatalf("❌ Gagal terhubung ke database: %v", err)
+	dsn := os.Getenv("SUPABASE_DSN")
+	if dsn == "" {
+		log.Fatal("SUPABASE_DSN tidak ditemukan dalam .env")
 	}
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Gagal menghubungkan ke database: %v", err)
+	} 
 
 	DB = db
-	log.Println("✅ Berhasil terhubung ke database Supabase PostgreSQL")
+	fmt.Println("Koneksi ke postgres berhasil")
+}
+
+func GetDB() *gorm.DB {
+	if DB == nil {
+		log.Fatal("DB belum diinisialisasi00")
+	}
+	return DB
 }

@@ -18,7 +18,7 @@ func main() {
 	}
 
 	// Koneksi ke database
-	config.ConnectDB()
+	config.InitDB()
 
 	// Inisialisasi Fiber app
 	app := fiber.New(fiber.Config{

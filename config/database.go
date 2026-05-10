@@ -1,6 +1,7 @@
 package config
 
 import (
+	"booking-lapangan-backend/models"
 	"fmt"
 	"log"
 	"os"
@@ -33,6 +34,8 @@ func InitDB() {
 	if err != nil {
 		log.Fatal("Gagal menghubungkan ke database: %v", err)
 	} 
+
+	db.AutoMigrate(&models.Booking{}, &models.Lapangan{}, &models.Pemesanan{}, &models.Pembayaran{})
 
 	DB = db
 	fmt.Println("Koneksi ke postgres berhasil")

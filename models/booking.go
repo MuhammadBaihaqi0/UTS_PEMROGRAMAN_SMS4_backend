@@ -14,7 +14,6 @@ type Booking struct {
 	JamMulai      string    `json:"jam_mulai"`
 	JamSelesai    string    `json:"jam_selesai"`
 	TotalHarga    float64   `json:"total_harga"`
-	Status        string    `json:"status"`
 	Catatan       string    `json:"catatan"`
 	CreatedAt     time.Time `json:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at"`
@@ -31,7 +30,6 @@ type BookingRequest struct {
 	JamMulai      string  `json:"jam_mulai"`
 	JamSelesai    string  `json:"jam_selesai"`
 	TotalHarga    float64 `json:"total_harga"`
-	Status        string  `json:"status"`
 	Catatan       string  `json:"catatan"`
 }
 

@@ -68,12 +68,6 @@ func CreatePembayaran(c *fiber.Ctx) error {
 		})
 	}
 	
-	// Update status pemesanan
-	var pemesanan models.Pemesanan
-	if err := config.DB.First(&pemesanan, p.PemesananID).Error; err == nil {
-		pemesanan.Status = "confirmed"
-		config.DB.Save(&pemesanan)
-	}
 
 	return c.Status(201).JSON(models.APIResponse{
 		Success: true,

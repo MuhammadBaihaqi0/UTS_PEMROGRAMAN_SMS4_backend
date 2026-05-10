@@ -55,8 +55,6 @@ func CreatePemesanan(c *fiber.Ctx) error {
 		})
 	}
 
-	p.Status = "pending"
-
 	result := config.DB.Create(&p)
 	if result.Error != nil {
 		return c.Status(500).JSON(models.APIResponse{
@@ -121,7 +119,7 @@ func DeletePemesanan(c *fiber.Ctx) error {
 func GetJadwalByLapangan(c *fiber.Ctx) error {
 	lapanganID := c.Params("lapangan_id")
 	var pemesanan []models.Pemesanan
-	result := config.DB.Where("lapangan_id = ? AND status != 'cancelled'", lapanganID).Find(&pemesanan)
+	result := config.DB.Where("lapangan_id = ?", lapanganID).Find(&pemesanan)
 	if result.Error != nil {
 		return c.Status(500).JSON(models.APIResponse{
 			Success: false,
@@ -138,7 +136,6 @@ func GetJadwalByLapangan(c *fiber.Ctx) error {
 			"tanggal_main": p.TanggalMain,
 			"jam_mulai": p.JamMulai,
 			"jam_selesai": p.JamSelesai,
-			"status": p.Status,
 		})
 	}
 

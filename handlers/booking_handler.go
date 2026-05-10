@@ -74,14 +74,6 @@ func validateBookingRequest(req models.BookingRequest) []string {
 		errors = append(errors, "total_harga tidak boleh negatif")
 	}
 
-	// Status: wajib & harus salah satu dari nilai yang valid
-	validStatus := map[string]bool{"pending": true, "confirmed": true, "cancelled": true, "completed": true}
-	if req.Status == "" {
-		errors = append(errors, "status wajib diisi")
-	} else if !validStatus[req.Status] {
-		errors = append(errors, "status harus salah satu dari: pending, confirmed, cancelled, completed")
-	}
-
 	return errors
 }
 
@@ -178,7 +170,6 @@ func CreateBooking(c *fiber.Ctx) error {
 		JamMulai:      req.JamMulai,
 		JamSelesai:    req.JamSelesai,
 		TotalHarga:    req.TotalHarga,
-		Status:        req.Status,
 		Catatan:       strings.TrimSpace(req.Catatan),
 	}
 
@@ -242,7 +233,6 @@ func UpdateBooking(c *fiber.Ctx) error {
 	b.JamMulai = req.JamMulai
 	b.JamSelesai = req.JamSelesai
 	b.TotalHarga = req.TotalHarga
-	b.Status = req.Status
 	b.Catatan = strings.TrimSpace(req.Catatan)
 
 	result = config.DB.Save(&b)

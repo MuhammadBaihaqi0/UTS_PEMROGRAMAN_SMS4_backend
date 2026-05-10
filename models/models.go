@@ -33,7 +33,6 @@ type Pemesanan struct {
 	JamSelesai   string     `json:"jam_selesai"`  // Format: HH:MM
 	
 	TotalHarga   float64    `json:"total_harga"`
-	Status       string     `json:"status"`       // pending, confirmed, cancelled, completed
 	Catatan      string     `json:"catatan"`
 	CreatedAt    time.Time  `json:"created_at"`
 	UpdatedAt    time.Time  `json:"updated_at"`
